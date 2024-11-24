@@ -7,7 +7,6 @@ import BookList from 'sections/books/BookList';
 
 // project import
 import axios from 'utils/axios';
-import { Container } from '@mui/system';
 
 export default function SearchPage() {
   const [theData, setTheData] = React.useState<IBook[]>([]);
