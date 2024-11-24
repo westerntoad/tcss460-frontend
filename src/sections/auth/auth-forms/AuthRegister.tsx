@@ -76,7 +76,7 @@ export default function AuthRegister({ providers, csrfToken }: any) {
           lastname: Yup.string().max(255).required('Last Name is required'),
           email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
           username: Yup.string().max(255).required('Username is required'),
-          phone: Yup.string().min(10, 'Phone number must be at least 10 characters').max(255).required('Email is required'),
+          phone: Yup.string().min(10, 'Phone number must be at least 10 characters').max(255).required('Phone number is required'),
           password: Yup.string()
             .required('Password is required')
             .test('no-leading-trailing-whitespace', 'Password cannot start or end with spaces', (value) => value === value.trim())
