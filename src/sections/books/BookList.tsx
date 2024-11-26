@@ -4,7 +4,7 @@
 import React from 'react';
 import BookButton from 'components/books/BookButton';
 import { IBook } from 'types/ibooks';
-import { Box, Container } from '@mui/system';
+import { Container } from '@mui/system';
 
 export default function BookList({ bookData }: { bookData: Array<IBook> }) {
   console.log(bookData);

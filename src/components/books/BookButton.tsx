@@ -3,6 +3,8 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+/* import Badge from '@mui/material/Badge';
+import StarFilled from '@ant-design/icons/StarFilled'; */
 
 import { IBook } from 'types/ibooks';
 
@@ -21,7 +23,8 @@ export default function BookButton({ book }: { book: IBook }) {
     height: '150px'
   };
   console.log("I'm being rendered!");
-  return (
+
+  let component = (
     <Link href={'/book/' + book.isbn13}>
       <img
         src={book.icons.large}
@@ -33,4 +36,14 @@ export default function BookButton({ book }: { book: IBook }) {
       />
     </Link>
   );
+
+/*   if (book.ratings.average >= 4) {
+    return (
+      <Badge badgeContent={<StarFilled style={{ fontSize: 14 }} />} style={{ position: 'absolute' }}>
+        {component}
+      </Badge>
+    );
+  } */
+
+  return component;
 }

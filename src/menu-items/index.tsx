@@ -2,15 +2,14 @@
 import samplePage from './sample-page';
 import other from './other';
 import pages from './messages';
-import search from './search';
-
+import books from './books';
 // types
 import { NavItemType } from 'types/menu';
 
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems: { items: NavItemType[] } = {
-  items: [search, samplePage, pages, other]
+  items: [books, samplePage, pages, other]
 };
 
 export default menuItems;
