@@ -26,8 +26,8 @@ export default function Page() {
     },
     icons: {
       large: '',
-      small: '',
-    },
+      small: ''
+    }
   });
   const params = useParams();
 
@@ -35,6 +35,7 @@ export default function Page() {
     axios
       .get(`/books/isbn/${params.isbn}`)
       .then((response) => {
+        console.log(response);
         response.status == 200 && setBook(response.data.books);
       })
       .catch((error) => {
