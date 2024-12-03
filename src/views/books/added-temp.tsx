@@ -33,7 +33,7 @@ export default function AddedPage() {
   const onSuccess = () => {
     setAlert({
       showAlert: true,
-      alertMessage: 'The message was sent!',
+      alertMessage: 'The book was added!',
       alertSeverity: 'success'
     });
   };
@@ -41,7 +41,7 @@ export default function AddedPage() {
   const onError = (message: string) => {
     setAlert({
       showAlert: true,
-      alertMessage: 'Message NOT sent! Error: ' + message,
+      alertMessage: 'Book NOT added! Error: ' + message,
       alertSeverity: 'error'
     });
   };
