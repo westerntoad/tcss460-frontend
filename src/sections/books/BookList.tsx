@@ -2,17 +2,19 @@
 /* eslint-disable @next/next/no-img-element */
 
 import React from 'react';
-import { ImageList } from '@mui/material';
-import ListedBook from 'components/ListedBook';
+import BookButton from 'components/books/BookButton';
 import { IBook } from 'types/ibooks';
+import { Container } from '@mui/system';
 
 export default function BookList({ bookData }: { bookData: Array<IBook> }) {
   console.log(bookData);
   return (
-    <ImageList sx={{ width: 1000, height: 1000 }} cols={4} rowHeight={150}>
-      {bookData.map((currentBook: IBook) => (
-        <ListedBook book={currentBook} key={currentBook.isbn13} />
-      ))}
-    </ImageList>
+    <div>
+      <Container component="main" maxWidth="md">
+        {bookData.map((currentBook: IBook) => (
+          <BookButton book={currentBook} key={currentBook.isbn13} />
+        ))}
+      </Container>
+    </div>
   );
 }
