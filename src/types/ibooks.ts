@@ -22,3 +22,21 @@ export interface IBook {
   ratings: IRatings;
   icons: IUrlIcon;
 }
+
+export interface BadIBook {
+  id: number;
+  isbn13: string;
+  authors: string;
+  publication_year: number;
+  original_title: string;
+  title: string;
+  rating_avg: number;
+  rating_count: number;
+  rating_1_start: number;
+  rating_2_start: number;
+  rating_3_start: number;
+  rating_4_start: number;
+  rating_5_start: number;
+  image_url: string;
+  image_small_url: string;
+}
