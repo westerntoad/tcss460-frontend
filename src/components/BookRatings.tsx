@@ -27,7 +27,7 @@ function RatingBar({ label, ratingCount, total }: SingleRatingProp) {
           component="section"
           sx={{
             p: 0.5,
-            width: ratingCount / total,
+            width: ratingCount / total * 0.25,
             background: '#faaf00',
             border: '2px solid #e69b00',
             '&:hover': {

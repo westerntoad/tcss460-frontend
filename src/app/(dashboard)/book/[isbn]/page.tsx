@@ -1,5 +1,6 @@
 'use client';
 import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation'
 import BookPage from 'views/book';
 
 import React from 'react';
@@ -22,7 +23,7 @@ export default function Page() {
       rating_2: 0,
       rating_3: 0,
       rating_4: 0,
-      rating_5: 0,
+      rating_5: 0
     },
     icons: {
       large: '',
@@ -30,6 +31,8 @@ export default function Page() {
     }
   });
   const params = useParams();
+
+  const router = useRouter();
 
   React.useEffect(() => {
     axios
@@ -40,7 +43,8 @@ export default function Page() {
       })
       .catch((error) => {
         console.error(error);
-  });
+        router.push('/not-found');
+      });
   }, []);
 
   return <BookPage book={book} />;
