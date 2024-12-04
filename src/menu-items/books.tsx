@@ -4,12 +4,13 @@ import { FormattedMessage } from 'react-intl';
 // assets
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import UnorderedListOutlined from '@ant-design/icons/UnorderedListOutlined';
+import PlusSquareOutlined from '@ant-design/icons/PlusSquareOutlined';
 
 // type
 import { NavItemType } from 'types/menu';
 
 // icons
-const icons = { SearchOutlined, UnorderedListOutlined };
+const icons = { SearchOutlined, UnorderedListOutlined, PlusSquareOutlined  };
 
 // ==============================|| MENU ITEMS - PAGES ||============================== //
 
@@ -18,6 +19,13 @@ const books: NavItemType = {
   title: <FormattedMessage id="books" />,
   type: 'group',
   children: [
+    {
+      id: 'Add Book',
+      title: <FormattedMessage id="Add Book" />,
+      type: 'item',
+      url: '/added',
+      icon: icons.PlusSquareOutlined
+    },
     {
       id: 'paginate-temp',
       title: <FormattedMessage id="paginate-temp" />,
