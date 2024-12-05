@@ -30,7 +30,9 @@ export default function BookPage({ book }: Props) {
         </Stack>
       </Stack>
 
-      <Typography variant="h3" sx={{ paddingTop: 3 }}>More by These Authors</Typography>
+      <Typography variant="h3" sx={{ paddingTop: 3 }}>
+        More by These Authors
+      </Typography>
       <Divider sx={{ paddingTop: 0.5 }} />
       {book.authors.split(',').map((author: string) => (
         <WorkBy key={author} author={author} />
