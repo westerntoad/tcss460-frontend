@@ -5,7 +5,7 @@ import Divider from '@mui/material/Divider';
 import React from 'react';
 
 import axios from 'utils/axios';
-import { BadIBook, IBook } from 'types/ibooks';
+import { BadIBook } from 'types/ibooks';
 import BookIcon from './BookIcon';
 
 interface Props {

@@ -17,7 +17,7 @@ import axios from 'axios';
 
 interface Props {
   book: IBook;
-  csrfToken: string;
+  csrfToken: any;
 }
 
 interface FieldProps {
@@ -73,6 +73,7 @@ export default function ChangeBookPage({ book, csrfToken }: Props) {
           <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" flexItem sx={{ marginBottom: 10 }} />}>
             <Stack direction="column" spacing={2}>
               <Image src={book.icons.large} width={98} height={147} alt="Book cover" />
+              <Button href={`/book/${book.isbn13}`} sx={{ fontSize: 13 }} variant="contained">View Book</Button>
             </Stack>
             <Stack direction="column" spacing={2}>
               <Formik
@@ -103,7 +104,6 @@ export default function ChangeBookPage({ book, csrfToken }: Props) {
                 })}
                 onSubmit={(values, { setErrors, setSubmitting, setValues, resetForm }) => {
                   console.dir(values);
-        
                   axios
                     .patch(`/books/update/${book.isbn13}`, {
                       title: values.title,
@@ -113,16 +113,17 @@ export default function ChangeBookPage({ book, csrfToken }: Props) {
                       image_small_url: values.image_small_url
                     })
                     .then((response) => {
-                      axios.patch(`books/update/rating/${book.isbn13}`, {
-                        rating_1_star: values.rating_1_star,
-                        rating_2_star: values.rating_2_star,
-                        rating_3_star: values.rating_3_star,
-                        rating_4_star: values.rating_4_star,
-                        rating_5_star: values.rating_5_star
-                      })
-                      .then((response) => {
-                        console.dir(response);
-                      });
+                      axios
+                        .patch(`books/update/rating/${book.isbn13}`, {
+                          rating_1_star: values.rating_1_star,
+                          rating_2_star: values.rating_2_star,
+                          rating_3_star: values.rating_3_star,
+                          rating_4_star: values.rating_4_star,
+                          rating_5_star: values.rating_5_star
+                        })
+                        .then((response) => {
+                          console.dir(response);
+                        });
                     })
                     .catch((error) => {
                       console.error(error);

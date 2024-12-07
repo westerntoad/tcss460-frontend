@@ -8,6 +8,7 @@ import axios from 'utils/axios';
 
 import { IBook } from 'types/ibooks';
 import ChangeBookPage from 'views/change-book';
+import { getCsrfToken } from 'next-auth/react';
 
 export default function Page() {
   const [book, setBook] = React.useState<IBook>({
@@ -31,6 +32,7 @@ export default function Page() {
     }
   });
 
+  const csrfToken = getCsrfToken();
   const params = useParams();
   const router = useRouter();
 
@@ -47,5 +49,5 @@ export default function Page() {
       });
   }, []);
 
-  return <ChangeBookPage book={book} />;
+  return <ChangeBookPage csrfToken={csrfToken} book={book} />;
 }
