@@ -14,6 +14,7 @@ import Button from '@mui/material/Button';
 
 import AnimateButton from 'components/@extended/AnimateButton';
 import axios from 'utils/axios';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   book: IBook;
@@ -66,6 +67,8 @@ function Field({ name, value, handleBlur, handleChange, touch, errors, error }: 
 }
 
 export default function ChangeBookPage({ book, csrfToken }: Props) {
+  const router = useRouter();
+  
   return (
     <MainCard>
       {(book.isbn13 && (
@@ -121,13 +124,14 @@ export default function ChangeBookPage({ book, csrfToken }: Props) {
                           rating_5_star: values.rating_5_star
                         })
                         .then((response) => {
-                          console.dir(response);
-                          alert(JSON.stringify(response));
+                          alert('Successfully altered book!');
+                          router.push(`/book/${book.isbn13}`);
                         });
                     })
                     .catch((error) => {
                       console.error(error);
                       alert(error);
+                      router.push(`/book/${book.isbn13}`);
                     });
                 }}
               >
