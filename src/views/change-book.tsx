@@ -13,7 +13,7 @@ import { FormHelperText, Grid, InputLabel, OutlinedInput } from '@mui/material';
 import Button from '@mui/material/Button';
 
 import AnimateButton from 'components/@extended/AnimateButton';
-import axios from 'axios';
+import axios from 'utils/axios';
 
 interface Props {
   book: IBook;
@@ -103,7 +103,6 @@ export default function ChangeBookPage({ book, csrfToken }: Props) {
                   rating_5_star: Yup.number().min(0, 'Must be greater than 0').required('Rating 5 is required')
                 })}
                 onSubmit={(values, { setErrors, setSubmitting, setValues, resetForm }) => {
-                  console.dir(values);
                   axios
                     .patch(`/books/update/${book.isbn13}`, {
                       title: values.title,
@@ -113,6 +112,7 @@ export default function ChangeBookPage({ book, csrfToken }: Props) {
                       image_small_url: values.image_small_url
                     })
                     .then((response) => {
+                      console.dir(values);
                       axios
                         .patch(`books/update/rating/${book.isbn13}`, {
                           rating_1_star: values.rating_1_star,
@@ -123,11 +123,12 @@ export default function ChangeBookPage({ book, csrfToken }: Props) {
                         })
                         .then((response) => {
                           console.dir(response);
+                          alert(response);
                         });
                     })
                     .catch((error) => {
                       console.error(error);
-                      setSubmitting(false);
+                      alert(error);
                     });
                 }}
               >
