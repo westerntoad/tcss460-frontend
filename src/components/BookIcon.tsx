@@ -12,9 +12,12 @@ interface Props {
 }
 
 export default function BookIcon({ book }: Props) {
+  const [hasError, setHasError] = React.useState<boolean>(false);
   const [hover, setHover] = useState(false);
   const handleMouseEnter = () => setHover(true);
   const handleMouseLeave = () => setHover(false);
+  
+  const fallbackImage = 'https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png';
 
   const imgStyle = {
     border: '1px solid #ddd',
@@ -28,10 +31,11 @@ export default function BookIcon({ book }: Props) {
     <Tooltip title={<Typography variant="body2">{book.title}</Typography>}>
       <Link href={'/book/' + book.isbn13}>
         <Image
-          src={book.icons.large}
+          src={hasError ? fallbackImage : book.icons.large}
           width={98}
           height={147}
           alt="Book cover"
+          onError={() => setHasError(true)}
           style={imgStyle}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
