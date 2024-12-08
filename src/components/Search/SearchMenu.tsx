@@ -1,23 +1,15 @@
 'use client';
 
-import { useState } from 'react';
-import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { MenuItem, Select } from '@mui/material';
 import { SearchFilters } from 'types/search';
 
-export default function SearchMenu({ setFilter }: { setFilter: Function }) {
-  const [value, setValue] = useState('Title');
-
-  const handleChange = (newValue: SelectChangeEvent) => {
-    setFilter(newValue.target.value);
-    setValue(newValue.target.value);
-  };
-
+export default function SearchMenu(props: { setFilter: Function; filterValue: SearchFilters }) {
   return (
     <>
       <Select
         defaultValue={SearchFilters.title}
-        value={value}
-        onChange={(e) => handleChange(e)}
+        value={props.filterValue}
+        onChange={(e) => props.setFilter(e.target.value)}
         sx={{ m: 1, width: '15ch', height: '41.133px' }}
       >
         <MenuItem value={SearchFilters.title}>Title</MenuItem>

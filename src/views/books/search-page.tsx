@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
 import * as React from 'react';
@@ -7,17 +8,25 @@ import { Box, Container } from '@mui/system';
 import { Divider } from '@mui/material';
 import MainCard from 'components/MainCard';
 import { useEffect, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+
+// Project Imports
 import { SearchFilters } from 'types/search';
 import { IBook } from 'types/ibooks';
-import { BadIBook } from 'types/ibooks';
 import axios from 'utils/axios';
 import BookList from 'sections/books/BookList';
+import { convertBadIBook } from 'utils/toIBook';
 
 export default function SearchPage() {
   const [query, setQuery] = useState<string>('');
   const [filter, setFilter] = useState<SearchFilters>(SearchFilters.title);
   const [results, setResults] = useState<IBook[] | undefined>();
-  const handleSearch = (e: MouseEvent) => {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
+  // Casts the "BadIBook" to a normal "IBook" when querying the backend, setting results rerenders BookList component
+  const handleSearch = (_: MouseEvent) => {
     axios
       .get(`/books/${filter}/${query}`)
       .then((response) => {
@@ -27,30 +36,7 @@ export default function SearchPage() {
         if (filter === SearchFilters.isbn) {
           setResults([response.data.books]);
         } else {
-          setResults(
-            response.data.map((book: BadIBook): IBook => {
-              return {
-                isbn13: parseInt(book.isbn13),
-                authors: book.authors,
-                publication: book.publication_year,
-                original_title: book.original_title,
-                title: book.title,
-                ratings: {
-                  average: book.rating_avg,
-                  count: book.rating_count,
-                  rating_1: book.rating_1_start,
-                  rating_2: book.rating_2_start,
-                  rating_3: book.rating_3_start,
-                  rating_4: book.rating_4_start,
-                  rating_5: book.rating_5_start
-                },
-                icons: {
-                  large: book.image_url,
-                  small: book.image_small_url
-                }
-              };
-            })
-          );
+          setResults(response.data.map(convertBadIBook));
         }
         console.log('BACKEND HIT, RESPONSE: ' + JSON.stringify(response.data));
       })
@@ -60,15 +46,29 @@ export default function SearchPage() {
       });
   };
 
+  // Using wrappers as to be able to pass a simple "Function" rather than a "Dispatch<SetStateAction<String>>"
   const setQueryWrapper = (theQuery: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (theQuery) {
+      params.set('query', theQuery);
+    } else {
+      params.delete('query');
+    }
+    replace(`${pathname}?${params.toString()}`);
     setQuery(theQuery);
-    console.log('QUERY HAS BEEN CHANGED TO: ' + theQuery);
   };
   const setFilterWrapper = (theFilter: SearchFilters) => {
+    const params = new URLSearchParams(searchParams);
+    if (theFilter) {
+      params.set('filter', theFilter);
+    } else {
+      params.delete('filter');
+    }
+    replace(`${pathname}?${params.toString()}`);
     setFilter(theFilter);
-    console.log('FILTER HAS BEEN CHANGED TO: ' + theFilter);
   };
 
+  // Uses the filter as a dependency as to create a fake search when a filter is chosen
   useEffect(() => {
     console.log(filter);
     const clickEvent = new MouseEvent('click', {
@@ -78,6 +78,20 @@ export default function SearchPage() {
     });
     handleSearch(clickEvent);
   }, [filter]);
+
+  // allows shared queries by URL, using as reference: https://nextjs.org/learn/dashboard-app/adding-search-and-pagination
+  useEffect(() => {
+    setQuery(searchParams.get('query')?.toString() || '');
+    setFilter((searchParams.get('filter')?.toString() as SearchFilters) || SearchFilters.title);
+    if (query) {
+      const clickEvent = new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+        view: window
+      });
+      handleSearch(clickEvent);
+    }
+  }, []);
 
   return (
     <>
@@ -91,7 +105,13 @@ export default function SearchPage() {
             alignItems: 'center'
           }}
         >
-          <SearchForm setQuery={setQueryWrapper} setFilter={setFilterWrapper} handleSearch={handleSearch}></SearchForm>
+          <SearchForm
+            setQuery={setQueryWrapper}
+            setFilter={setFilterWrapper}
+            handleSearch={handleSearch}
+            filterValue={filter}
+            param={query || ''}
+          ></SearchForm>
         </Box>
         <Divider sx={{ paddingTop: 0.5, paddingBottom: 0.5, margin: 3 }} />
         <Container maxWidth="lg">{results !== undefined ? <BookList bookData={results} /> : null}</Container>

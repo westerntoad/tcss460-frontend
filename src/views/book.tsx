@@ -24,10 +24,7 @@ export default function BookPage({ book }: Props) {
           <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" flexItem sx={{ marginBottom: 10 }} />}>
             <Stack direction="column" spacing={2}>
               <Image src={book.icons.large} width={98} height={147} alt="Book cover" />
-              <Button href={`change/${book.isbn13}`}
-                sx={{ fontSize: 13 }}
-                variant="contained"
-              >
+              <Button href={`change/${book.isbn13}`} sx={{ fontSize: 13 }} variant="contained">
                 Alter Book
               </Button>
             </Stack>

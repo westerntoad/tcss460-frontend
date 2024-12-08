@@ -7,24 +7,23 @@ import SearchMenu from 'components/Search/SearchMenu';
 
 import { Stack } from '@mui/system';
 import { Typography } from '@mui/material';
+import { SearchFilters } from 'types/search';
 
-export default function SearchForm({
-  setQuery,
-  setFilter,
-  handleSearch
-}: {
+export default function SearchForm(props: {
   setQuery: Function;
   setFilter: Function;
   handleSearch: Function;
+  filterValue: SearchFilters;
+  param: string;
 }) {
   return (
     <>
       <Stack direction="row" sx={{ alignItems: 'center' }} alignContent="center">
-        <SearchBar setQuery={setQuery} clickHandler={handleSearch}></SearchBar>
+        <SearchBar setQuery={props.setQuery} clickHandler={props.handleSearch} param={props.param}></SearchBar>
         <Typography align="center" variant="body1">
           by
         </Typography>
-        <SearchMenu setFilter={setFilter}></SearchMenu>
+        <SearchMenu setFilter={props.setFilter} filterValue={props.filterValue}></SearchMenu>
       </Stack>
     </>
   );
