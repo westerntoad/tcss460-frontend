@@ -20,8 +20,8 @@ const books: NavItemType = {
   type: 'group',
   children: [
     {
-      id: 'Add Book',
-      title: <FormattedMessage id="Add Book" />,
+      id: 'add-book',
+      title: <FormattedMessage id="add-book" />,
       type: 'item',
       url: '/added',
       icon: icons.PlusSquareOutlined

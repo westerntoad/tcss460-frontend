@@ -5,93 +5,33 @@ import * as React from 'react';
 
 import SearchForm from '../../sections/books/SearchForm';
 import { Box, Container } from '@mui/system';
-import { Divider } from '@mui/material';
+import { Alert, Divider } from '@mui/material';
 import MainCard from 'components/MainCard';
-import { useEffect, useState } from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 
 // Project Imports
-import { SearchFilters } from 'types/search';
 import { IBook } from 'types/ibooks';
-import axios from 'utils/axios';
 import BookList from 'sections/books/BookList';
-import { convertBadIBook } from 'utils/toIBook';
+import SearchFooter from 'components/Search/SearchFooter';
+import { IAlert, EMPTY_ALERT } from 'types/alerts';
 
 export default function SearchPage() {
-  const [query, setQuery] = useState<string>('');
-  const [filter, setFilter] = useState<SearchFilters>(SearchFilters.title);
   const [results, setResults] = useState<IBook[] | undefined>();
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const { replace } = useRouter();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(25);
+  const [alert, setAlert] = React.useState(EMPTY_ALERT);
 
-  // Casts the "BadIBook" to a normal "IBook" when querying the backend, setting results rerenders BookList component
-  const handleSearch = (_: MouseEvent) => {
-    axios
-      .get(`/books/${filter}/${query}`)
-      .then((response) => {
-        if (filter === SearchFilters.author) {
-          query.replace(' ', '+');
-        }
-        if (filter === SearchFilters.isbn) {
-          setResults([response.data.books]);
-        } else {
-          setResults(response.data.map(convertBadIBook));
-        }
-        console.log('BACKEND HIT, RESPONSE: ' + JSON.stringify(response.data));
-      })
-      .catch((error) => {
-        setResults(undefined);
-        console.log(error + 'handle error here');
-      });
+  const totalPages = results ? Math.ceil(results.length / pageSize) : 0;
+
+  const paginatedResults = results ? results.slice((currentPage - 1) * pageSize, currentPage * pageSize) : [];
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
-  // Using wrappers as to be able to pass a simple "Function" rather than a "Dispatch<SetStateAction<String>>"
-  const setQueryWrapper = (theQuery: string) => {
-    const params = new URLSearchParams(searchParams);
-    if (theQuery) {
-      params.set('query', theQuery);
-    } else {
-      params.delete('query');
-    }
-    replace(`${pathname}?${params.toString()}`);
-    setQuery(theQuery);
+  const errorWrapper = (theAlert: IAlert) => {
+    setAlert(theAlert);
   };
-  const setFilterWrapper = (theFilter: SearchFilters) => {
-    const params = new URLSearchParams(searchParams);
-    if (theFilter) {
-      params.set('filter', theFilter);
-    } else {
-      params.delete('filter');
-    }
-    replace(`${pathname}?${params.toString()}`);
-    setFilter(theFilter);
-  };
-
-  // Uses the filter as a dependency as to create a fake search when a filter is chosen
-  useEffect(() => {
-    console.log(filter);
-    const clickEvent = new MouseEvent('click', {
-      bubbles: true,
-      cancelable: true,
-      view: window
-    });
-    handleSearch(clickEvent);
-  }, [filter]);
-
-  // allows shared queries by URL, using as reference: https://nextjs.org/learn/dashboard-app/adding-search-and-pagination
-  useEffect(() => {
-    setQuery(searchParams.get('query')?.toString() || '');
-    setFilter((searchParams.get('filter')?.toString() as SearchFilters) || SearchFilters.title);
-    if (query) {
-      const clickEvent = new MouseEvent('click', {
-        bubbles: true,
-        cancelable: true,
-        view: window
-      });
-      handleSearch(clickEvent);
-    }
-  }, []);
 
   return (
     <>
@@ -105,16 +45,28 @@ export default function SearchPage() {
             alignItems: 'center'
           }}
         >
-          <SearchForm
-            setQuery={setQueryWrapper}
-            setFilter={setFilterWrapper}
-            handleSearch={handleSearch}
-            filterValue={filter}
-            param={query || ''}
-          ></SearchForm>
+          <SearchForm alertSetter={errorWrapper} resultSetter={setResults} pageHandler={handlePageChange}></SearchForm>
         </Box>
         <Divider sx={{ paddingTop: 0.5, paddingBottom: 0.5, margin: 3 }} />
-        <Container maxWidth="lg">{results !== undefined ? <BookList bookData={results} /> : null}</Container>
+        <Container maxWidth="lg">
+          {alert.alertMessage && (
+            <Alert severity={alert.alertSeverity as any} sx={{ marginBottom: 3 }} onClose={() => setAlert(EMPTY_ALERT)}>
+              {alert.alertMessage}
+            </Alert>
+          )}
+          {results !== undefined ? (
+            <>
+              <BookList bookData={paginatedResults} />
+              <SearchFooter
+                pageChangeHandler={handlePageChange}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                pageSizeSetter={setPageSize}
+                pageSize={pageSize}
+              />
+            </>
+          ) : null}
+        </Container>
       </MainCard>
     </>
   );
