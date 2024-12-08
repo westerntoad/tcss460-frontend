@@ -61,11 +61,11 @@ export default function SendBook({ onSuccess, onError }: { onSuccess: () => void
               title: values.title,
               authors: values.authors,
               publication_year: values.publication_year,
-              rating_1: values.rating_1,
-              rating_2: values.rating_2,
-              rating_3: values.rating_3,
-              rating_4: values.rating_4,
-              rating_5: values.rating_5,
+              rating_1_star: values.rating_1,
+              rating_2_star: values.rating_2,
+              rating_3_star: values.rating_3,
+              rating_4_star: values.rating_4,
+              rating_5_star: values.rating_5,
               image_url: values.image_url,
               image_small_url: values.image_small_url
             })
