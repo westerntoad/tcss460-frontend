@@ -112,9 +112,8 @@ export default function ChangeBookPage({ book, csrfToken }: Props) {
                       image_small_url: values.image_small_url
                     })
                     .then((response) => {
-                      console.dir(values);
                       axios
-                        .patch(`books/update/rating/${book.isbn13}`, {
+                        .patch(`books/update/ratings/${book.isbn13}`, {
                           rating_1_star: values.rating_1_star,
                           rating_2_star: values.rating_2_star,
                           rating_3_star: values.rating_3_star,
@@ -123,7 +122,7 @@ export default function ChangeBookPage({ book, csrfToken }: Props) {
                         })
                         .then((response) => {
                           console.dir(response);
-                          alert(response);
+                          alert(JSON.stringify(response));
                         });
                     })
                     .catch((error) => {

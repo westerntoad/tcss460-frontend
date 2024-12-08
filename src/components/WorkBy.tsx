@@ -1,12 +1,12 @@
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-import Divider from '@mui/material/Divider';
 
 import React from 'react';
 
 import axios from 'utils/axios';
 import { BadIBook } from 'types/ibooks';
 import BookIcon from './BookIcon';
+import { Paper } from '@mui/material';
 
 interface Props {
   author: string;
@@ -33,15 +33,16 @@ export default function WorkBy({ author }: Props) {
       <Typography variant="h4" key={author} sx={{ paddingTop: 3 }}>
         {author}
       </Typography>
-      <Divider sx={{ paddingTop: 0.5, width: 0.35 }} />
-      <Stack direction="row" spacing={2}>
-        {theData.map((currentBook: BadIBook) => (
-          <BookIcon key={currentBook.isbn13} book={currentBook} />
-          // <Typography key={currentBook.isbn13} variant="body2">
-          //   {currentBook.title}
-          // </Typography>
-        ))}
-      </Stack>
+      <Paper style={{maxHeight: 200, overflow: 'auto'}}>
+        <Stack direction="row" sx={{ padding: 3 }} spacing={2}>
+          {theData.map((currentBook: BadIBook) => (
+            <BookIcon key={currentBook.isbn13} book={currentBook} />
+            // <Typography key={currentBook.isbn13} variant="body2">
+            //   {currentBook.title}
+            // </Typography>
+          ))}
+        </Stack>
+      </Paper>
     </Stack>
   );
 }
