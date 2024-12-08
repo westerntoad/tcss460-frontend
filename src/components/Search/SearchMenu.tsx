@@ -1,23 +1,40 @@
 'use client';
 
-import { useState } from 'react';
-import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { MenuItem, Select } from '@mui/material';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+
+// project imports
 import { SearchFilters } from 'types/search';
 
-export default function SearchMenu({ setFilter }: { setFilter: Function }) {
-  const [value, setValue] = useState('Title');
+export default function SearchMenu(props: { searchHandler: (query: string, filter: SearchFilters | null) => void }) {
+  const searchParams = useSearchParams();
+  const { replace } = useRouter();
+  const pathname = usePathname();
 
-  const handleChange = (newValue: SelectChangeEvent) => {
-    setFilter(newValue.target.value);
-    setValue(newValue.target.value);
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    if (!params.get('filter')) {
+      params.set('filter', SearchFilters.title);
+      replace(`${pathname}?${params.toString()}`);
+    }
+  }, []);
+  const handleChange = (theFilter: SearchFilters) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('filter', theFilter);
+    replace(`${pathname}?${params.toString()}`);
+    props.searchHandler(params.get('query') || '', theFilter);
   };
 
   return (
     <>
       <Select
         defaultValue={SearchFilters.title}
-        value={value}
-        onChange={(e) => handleChange(e)}
+        value={searchParams.get('filter')}
+        onChange={(e) => {
+          handleChange(e.target.value as SearchFilters);
+        }}
         sx={{ m: 1, width: '15ch', height: '41.133px' }}
       >
         <MenuItem value={SearchFilters.title}>Title</MenuItem>

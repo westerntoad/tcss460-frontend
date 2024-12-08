@@ -12,20 +12,9 @@ import { Alert } from '@mui/material';
 
 // project import
 import SendMessage from 'sections/books/bookAdder';
+import { EMPTY_ALERT } from 'types/alerts';
 
 const defaultTheme = createTheme();
-
-interface IAlert {
-  showAlert: boolean;
-  alertMessage: string;
-  alertSeverity: string;
-}
-
-const EMPTY_ALERT: IAlert = {
-  showAlert: false,
-  alertMessage: '',
-  alertSeverity: ''
-};
 
 export default function AddedPage() {
   const [alert, setAlert] = React.useState(EMPTY_ALERT);
