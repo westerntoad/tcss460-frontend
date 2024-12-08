@@ -27,7 +27,7 @@ function RatingBar({ label, ratingCount, total }: SingleRatingProp) {
           component="section"
           sx={{
             p: 0.5,
-            width: (ratingCount / total) * 0.25,
+            width: (ratingCount / total),
             background: '#faaf00',
             border: '2px solid #e69b00',
             '&:hover': {
@@ -43,7 +43,8 @@ function RatingBar({ label, ratingCount, total }: SingleRatingProp) {
 export default function BookPage({ ratings }: Props) {
   return (
     <>
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" sx={{ justifyContent: 'flex-end', alignItems: 'center' }} spacing={2}>
+        <Typography variant="h5">{ratings.average}</Typography>
         <Rating name="book-rating" readOnly value={ratings.average} precision={0.2} />
         <Typography variant="body1">{ratings.count + ' Total Ratings'}</Typography>
       </Stack>
