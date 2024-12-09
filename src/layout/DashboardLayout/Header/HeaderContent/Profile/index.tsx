@@ -28,6 +28,7 @@ import useUser from 'hooks/useUser';
 
 // assets
 import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
+import Link from '@mui/material/Link';
 
 // ==============================|| HEADER CONTENT - PROFILE ||============================== //
 
@@ -135,6 +136,11 @@ export default function Profile() {
                             <LogoutOutlined />
                           </IconButton>
                         </Tooltip>
+                      </Grid>
+                      <Grid item sx={{ marginLeft: '49.5px' }}>
+                        <Link href={'/reset-pass'} variant="body2" color="text.secondary">
+                          Reset Password?
+                        </Link>
                       </Grid>
                     </Grid>
                   </CardContent>
