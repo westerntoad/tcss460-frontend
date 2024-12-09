@@ -63,10 +63,10 @@ export default function SearchFooter(props: {
         >
           <InputLabel id="page-size-label">Page Size</InputLabel>
           <Select labelId="page-size-label" value={props.pageSize} onChange={(e) => pageSizeWrapper(e.target.value as number)}>
-            <MenuItem value={25}>25</MenuItem>
-            <MenuItem value={50}>50</MenuItem>
-            <MenuItem value={75}>75</MenuItem>
-            <MenuItem value={100}>100</MenuItem>
+            <MenuItem value={15}>15</MenuItem>
+            <MenuItem value={30}>30</MenuItem>
+            <MenuItem value={45}>45</MenuItem>
+            <MenuItem value={60}>60</MenuItem>
           </Select>
         </FormControl>
         <Pagination count={props.totalPages} page={props.currentPage} onChange={(_, page) => handleChange(page)} color="primary" />

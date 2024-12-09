@@ -9,9 +9,11 @@ import { IBook } from 'types/ibooks';
 
 interface Props {
   book: IBook;
+  width: number;
+  height: number;
 }
 
-export default function BookIcon({ book }: Props) {
+export default function BookIcon({ book, width, height }: Props) {
   const [hasError, setHasError] = React.useState<boolean>(false);
   const [hover, setHover] = useState(false);
   const handleMouseEnter = () => setHover(true);
@@ -32,8 +34,10 @@ export default function BookIcon({ book }: Props) {
       <Link href={'/book/' + book.isbn13}>
         <Image
           src={hasError ? fallbackImage : book.icons.large}
-          width={98}
-          height={147}
+          // width={98}
+          // height={147}
+          width={width}
+          height={height}
           alt="Book cover"
           onError={() => setHasError(true)}
           style={imgStyle}

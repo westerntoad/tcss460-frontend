@@ -30,7 +30,7 @@ export default function SearchPage() {
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
     if (!params.get('size')) {
-      params.set('size', '25');
+      params.set('size', '15');
       replace(`${pathName}?${params.toString()}`);
     }
   }, []);

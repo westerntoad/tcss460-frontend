@@ -37,10 +37,7 @@ export default function WorkBy({ author }: Props) {
       <Paper style={{ maxHeight: 200, overflow: 'auto' }}>
         <Stack direction="row" sx={{ padding: 2 }} spacing={2}>
           {theData.map((currentBook: IBook) => (
-            <BookIcon key={currentBook.isbn13} book={currentBook} />
-            // <Typography key={currentBook.isbn13} variant="body2">
-            //   {currentBook.title}
-            // </Typography>
+            <BookIcon width={98} height={147} key={currentBook.isbn13} book={currentBook} />
           ))}
         </Stack>
       </Paper>
