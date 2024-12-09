@@ -44,11 +44,26 @@ export default function SendBook({ onSuccess, onError }: { onSuccess: () => void
           title: Yup.string().max(255).required('Title is required'),
           authors: Yup.string().max(255).required('Author(s) is required'),
           publication_year: Yup.number().min(0, 'Must be greater than 0').required('Publicatiob Year is required'),
-          rating_1: Yup.number().min(0, 'Must be greater than 0').required('Rating 1 is required'),
-          rating_2: Yup.number().min(0, 'Must be greater than 0').required('Rating 2 is required'),
-          rating_3: Yup.number().min(0, 'Must be greater than 0').required('Rating 3 is required'),
-          rating_4: Yup.number().min(0, 'Must be greater than 0').required('Rating 4 is required'),
-          rating_5: Yup.number().min(0, 'Must be greater than 0').required('Rating 5 is required'),
+          rating_1: Yup.number()
+            .min(0, 'Must be greater than 0')
+            .required('Rating 1 is required')
+            .max(2147483647, 'Must be less than 2,147,483,647'),
+          rating_2: Yup.number()
+            .min(0, 'Must be greater than 0')
+            .required('Rating 2 is required')
+            .max(2147483647, 'Must be less than 2,147,483,647'),
+          rating_3: Yup.number()
+            .min(0, 'Must be greater than 0')
+            .required('Rating 3 is required')
+            .max(2147483647, 'Must be less than 2,147,483,647'),
+          rating_4: Yup.number()
+            .min(0, 'Must be greater than 0')
+            .required('Rating 4 is required')
+            .max(2147483647, 'Must be less than 2,147,483,647'),
+          rating_5: Yup.number()
+            .min(0, 'Must be greater than 0')
+            .required('Rating 5 is required')
+            .max(2147483647, 'Must be less than 2,147,483,647'),
           image_url: Yup.string().max(255).required('Image Url is required'),
           image_small_url: Yup.string().max(255).required('Image Small Url is required')
         })}
