@@ -119,11 +119,11 @@ export default function ChangeBookPage({ book, csrfToken }: Props) {
                     .then((response) => {
                       axios
                         .patch(`books/update/ratings/${book.isbn13}`, {
-                          rating_1_star: values.rating_1_star,
-                          rating_2_star: values.rating_2_star,
-                          rating_3_star: values.rating_3_star,
-                          rating_4_star: values.rating_4_star,
-                          rating_5_star: values.rating_5_star
+                          rating_1_star: +values.rating_1_star,
+                          rating_2_star: +values.rating_2_star,
+                          rating_3_star: +values.rating_3_star,
+                          rating_4_star: +values.rating_4_star,
+                          rating_5_star: +values.rating_5_star
                         })
                         .then((response) => {
                           alert('Successfully altered book!');

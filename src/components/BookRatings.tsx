@@ -47,7 +47,7 @@ export default function BookPage({ ratings }: Props) {
       <Divider />
       <Stack spacing={0.5}>
         <Stack direction="row" sx={{ justifyContent: 'flex-start', alignItems: 'center' }} spacing={2}>
-          <Typography variant="h5">{Math.round(+ratings.average * 100) / 100}</Typography>
+          <Typography variant="h5">{Math.round((+ratings.average) * 100) / 100}</Typography>
           <Rating name="book-rating" readOnly value={ratings.average} precision={0.2} />
           <Typography variant="body1">{ratings.count + ' Total Ratings'}</Typography>
         </Stack>
