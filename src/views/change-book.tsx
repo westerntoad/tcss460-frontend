@@ -68,7 +68,7 @@ function Field({ name, value, handleBlur, handleChange, touch, errors, error }: 
 
 export default function ChangeBookPage({ book, csrfToken }: Props) {
   const router = useRouter();
-  
+
   return (
     <MainCard>
       {(book.isbn13 && (
@@ -76,7 +76,9 @@ export default function ChangeBookPage({ book, csrfToken }: Props) {
           <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" flexItem sx={{ marginBottom: 10 }} />}>
             <Stack direction="column" spacing={2}>
               <Image src={book.icons.large} width={98} height={147} alt="Book cover" />
-              <Button href={`/book/${book.isbn13}`} sx={{ fontSize: 13 }} variant="contained">View Book</Button>
+              <Button href={`/book/${book.isbn13}`} sx={{ fontSize: 13 }} variant="contained">
+                View Book
+              </Button>
             </Stack>
             <Stack direction="column" spacing={2}>
               <Formik

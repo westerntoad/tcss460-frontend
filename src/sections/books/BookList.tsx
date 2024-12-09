@@ -8,6 +8,7 @@ import BookIcon from 'components/BookIcon';
 import Grid2 from '@mui/material/Unstable_Grid2';
 
 export default function BookList(props: { bookData: Array<IBook> }) {
+  
   return (
     <div>
       <Container component="main" maxWidth="md">
