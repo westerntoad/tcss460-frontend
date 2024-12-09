@@ -7,6 +7,7 @@ import Tooltip from '@mui/material/Tooltip';
 import React from 'react';
 
 import { IRatings } from 'types/ibooks';
+import { Divider } from '@mui/material';
 
 interface Props {
   ratings: IRatings;
@@ -21,7 +22,7 @@ interface SingleRatingProp {
 function RatingBar({ label, ratingCount, total }: SingleRatingProp) {
   return (
     <Stack direction="row" spacing={2}>
-      <Typography>{label}</Typography>
+      <Typography sx={{ fontFamily: 'monospace' }}>{label}</Typography>
       <Tooltip title={ratingCount}>
         <Box
           component="section"
@@ -43,16 +44,19 @@ function RatingBar({ label, ratingCount, total }: SingleRatingProp) {
 export default function BookPage({ ratings }: Props) {
   return (
     <>
-      <Stack direction="row" sx={{ justifyContent: 'flex-start', alignItems: 'center' }} spacing={2}>
-        <Typography variant="h5">{Math.round(+ratings.average * 100) / 100}</Typography>
-        <Rating name="book-rating" readOnly value={ratings.average} precision={0.2} />
-        <Typography variant="body1">{ratings.count + ' Total Ratings'}</Typography>
+      <Divider />
+      <Stack spacing={0.5}>
+        <Stack direction="row" sx={{ justifyContent: 'flex-start', alignItems: 'center' }} spacing={2}>
+          <Typography variant="h5">{Math.round(+ratings.average * 100) / 100}</Typography>
+          <Rating name="book-rating" readOnly value={ratings.average} precision={0.2} />
+          <Typography variant="body1">{ratings.count + ' Total Ratings'}</Typography>
+        </Stack>
+        <RatingBar total={ratings.count} label="1" ratingCount={ratings.rating_1} />
+        <RatingBar total={ratings.count} label="2" ratingCount={ratings.rating_2} />
+        <RatingBar total={ratings.count} label="3" ratingCount={ratings.rating_3} />
+        <RatingBar total={ratings.count} label="4" ratingCount={ratings.rating_4} />
+        <RatingBar total={ratings.count} label="5" ratingCount={ratings.rating_5} />
       </Stack>
-      <RatingBar total={ratings.count} label="1" ratingCount={ratings.rating_1} />
-      <RatingBar total={ratings.count} label="2" ratingCount={ratings.rating_2} />
-      <RatingBar total={ratings.count} label="3" ratingCount={ratings.rating_3} />
-      <RatingBar total={ratings.count} label="4" ratingCount={ratings.rating_4} />
-      <RatingBar total={ratings.count} label="5" ratingCount={ratings.rating_5} />
     </>
   );
 }

@@ -28,25 +28,25 @@ export default function BookPage({ book }: Props) {
       {(book.isbn13 && (
         <>
           <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" flexItem sx={{ marginBottom: 10 }} />}>
-            <Stack direction="column" spacing={2}>
+            <Stack direction="column" spacing={2} sx={{ justifyContent: 'flex-start', alignItems: 'center' }}>
               <Image
                 src={hasError ? fallbackImage : book.icons.large}
                 width={98}
                 height={147}
                 alt="Book cover"
-                onError={()=> setHasError(true)} 
+                onError={() => setHasError(true)}
               />
+              <Typography variant="body1" sx={{ fontSize: 9, fontFamily: 'monospace' }}>{formatedISBN}</Typography>
               <Button href={`change/${book.isbn13}`} sx={{ fontSize: 13 }} variant="contained">
                 Alter Book
               </Button>
             </Stack>
-            <Stack direction="column" spacing={2}>
+            <Stack direction="column" spacing={1}>
               <Typography variant="h2">{book.title}</Typography>
               <Typography variant="body1">
                 <em>{'by ' + book.authors}</em>
               </Typography>
               <Typography variant="body1">{'First published ' + book.publication}</Typography>
-              <Typography variant="body1">{`ISBN-13: ${formatedISBN}`}</Typography>
               <BookRatings ratings={book.ratings} />
             </Stack>
           </Stack>
