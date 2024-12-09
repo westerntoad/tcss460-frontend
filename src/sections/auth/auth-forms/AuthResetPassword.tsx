@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState, SyntheticEvent } from 'react';
+import { useRouter } from 'next/navigation';
+import { signOut } from "next-auth/react"
 
 // material-ui
 import Box from '@mui/material/Box';
@@ -38,6 +40,7 @@ import EyeInvisibleOutlined from '@ant-design/icons/EyeInvisibleOutlined';
 // ============================|| STATIC - RESET PASSWORD ||============================ //
 
 export default function AuthResetPassword() {
+  const router = useRouter();
   const user = useUser();
 
   const [level, setLevel] = useState<StringColorProps>();
@@ -100,6 +103,12 @@ export default function AuthResetPassword() {
                 color: 'success'
               }
             } as SnackbarProps);
+
+            signOut();
+
+            setTimeout(() => {
+              router.push('/login');
+            }, 1500);
           }).catch((error) => {
             setErrors({ submit: 'Error resetting password: ' + error.message });
             setSubmitting(false);
