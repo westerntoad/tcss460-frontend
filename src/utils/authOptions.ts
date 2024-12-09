@@ -22,7 +22,7 @@ export const authOptions: NextAuthOptions = {
           });
           if (user) {
             user.data.user['accessToken'] = user.data.accessToken;
-            return user.data;
+            return user.data.user;
           }
         } catch (e: any) {
           console.dir(e);
