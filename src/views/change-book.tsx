@@ -96,16 +96,31 @@ export default function ChangeBookPage({ book, csrfToken }: Props) {
                   submit: null
                 }}
                 validationSchema={Yup.object().shape({
-                  title: Yup.string().max(255).required('Title is required'),
-                  authors: Yup.string().max(255).required('Author(s) is required'),
-                  publication_year: Yup.number().min(0, 'Must be greater than 0').required('Publicatiob Year is required'),
+                  title: Yup.string().max(1024).required('Title is required'),
+                  authors: Yup.string().max(1024).required('Author(s) is required'),
+                  publication_year: Yup.number().min(0, 'Must be greater than 0').required('Publication Year is required'),
                   image_url: Yup.string().max(255).required('Image Url is required'),
                   image_small_url: Yup.string().max(255).required('Image Small Url is required'),
-                  rating_1_star: Yup.number().min(0, 'Must be greater than 0').required('Rating 1 is required'),
-                  rating_2_star: Yup.number().min(0, 'Must be greater than 0').required('Rating 2 is required'),
-                  rating_3_star: Yup.number().min(0, 'Must be greater than 0').required('Rating 3 is required'),
-                  rating_4_star: Yup.number().min(0, 'Must be greater than 0').required('Rating 4 is required'),
-                  rating_5_star: Yup.number().min(0, 'Must be greater than 0').required('Rating 5 is required')
+                  rating_1_star: Yup.number()
+                    .min(0, 'Must be greater than 0')
+                    .required('Rating 1 is required')
+                    .max(2147483647, 'Must be less than 2,147,483,647'),
+                  rating_2_star: Yup.number()
+                    .min(0, 'Must be greater than 0')
+                    .required('Rating 2 is required')
+                    .max(2147483647, 'Must be less than 2,147,483,647'),
+                  rating_3_star: Yup.number()
+                    .min(0, 'Must be greater than 0')
+                    .required('Rating 3 is required')
+                    .max(2147483647, 'Must be less than 2,147,483,647'),
+                  rating_4_star: Yup.number()
+                    .min(0, 'Must be greater than 0')
+                    .required('Rating 4 is required')
+                    .max(2147483647, 'Must be less than 2,147,483,647'),
+                  rating_5_star: Yup.number()
+                    .min(0, 'Must be greater than 0')
+                    .required('Rating 5 is required')
+                    .max(2147483647, 'Must be less than 2,147,483,647')
                 })}
                 onSubmit={(values, { setErrors, setSubmitting, setValues, resetForm }) => {
                   axios
@@ -132,8 +147,8 @@ export default function ChangeBookPage({ book, csrfToken }: Props) {
                     })
                     .catch((error) => {
                       console.error(error);
-                      alert(error);
-                      router.push(`/book/${book.isbn13}`);
+                      alert('There was an error altering: ' + error.message);
+                      setSubmitting(false);
                     });
                 }}
               >

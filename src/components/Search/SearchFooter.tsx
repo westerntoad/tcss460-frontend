@@ -14,14 +14,13 @@ export default function SearchFooter(props: {
   pageSize: number;
   nav: navProps;
 }) {
-
   useEffect(() => {
     const params = new URLSearchParams(props.nav.searchParams);
     if (!params.get('page')) {
       params.set('page', '1');
       props.nav.replace(`${props.nav.pathname}?${params.toString()}`);
     } else {
-      handleChange(parseInt(params.get('page') as string));
+      props.pageChangeHandler(parseInt(params.get('page') as string));
     }
   }, []);
 
