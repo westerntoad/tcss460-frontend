@@ -18,7 +18,7 @@ const home: NavItemType = {
   id: 'sample-page',
   title: <FormattedMessage id="sample-page" />,
   type: 'group',
-  url: '/home',
+  url: '/welcome',
   icon: icons.HomeOutlined
 };
 
