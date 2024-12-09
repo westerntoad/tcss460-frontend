@@ -5,7 +5,6 @@ import * as React from 'react';
 import { Stack } from '@mui/system';
 import { Typography } from '@mui/material';
 import { SearchFilters } from 'types/search';
-import { useSearchParams } from 'next/navigation';
 
 // project imports
 import axios from 'utils/axios';
@@ -14,10 +13,9 @@ import { useEffect } from 'react';
 import SearchBar from 'components/Search/SearchBar';
 import SearchMenu from 'components/Search/SearchMenu';
 import { EMPTY_ALERT } from 'types/alerts';
+import navProps from 'types/navs';
 
-export default function SearchForm(props: { resultSetter: Function; pageHandler: Function; alertSetter: Function }) {
-
-  const searchParams = useSearchParams();
+export default function SearchForm(props: { resultSetter: Function; pageHandler: Function; alertSetter: Function; nav: navProps }) {
 
   useEffect(() => {
     handleSearch(null, null);
@@ -32,11 +30,11 @@ export default function SearchForm(props: { resultSetter: Function; pageHandler:
   };
 
   const handleSearch = (query: string | null, filter: SearchFilters | null) => {
-    if (!query && searchParams.get('query')) {
-      query = searchParams.get('query') as string;
+    if (!query && props.nav.searchParams.get('query')) {
+      query = props.nav.searchParams.get('query') as string;
     }
-    if ((!filter || filter === null) && searchParams.get('filter')) {
-      filter = searchParams.get('filter') as SearchFilters;
+    if ((!filter || filter === null) && props.nav.searchParams.get('filter')) {
+      filter = props.nav.searchParams.get('filter') as SearchFilters;
     }
     if (query && filter) {
       axios
@@ -59,6 +57,7 @@ export default function SearchForm(props: { resultSetter: Function; pageHandler:
         });
     }
   };
+  
   return (
     <>
       <Stack direction="row" sx={{ alignItems: 'center' }} alignContent="center">
@@ -66,7 +65,7 @@ export default function SearchForm(props: { resultSetter: Function; pageHandler:
         <Typography align="center" variant="body1">
           by
         </Typography>
-        <SearchMenu searchHandler={handleSearch}></SearchMenu>
+        <SearchMenu nav={props.nav} searchHandler={handleSearch}></SearchMenu>
       </Stack>
     </>
   );

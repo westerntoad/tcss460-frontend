@@ -2,9 +2,6 @@
 
 import { useEffect, useState, SyntheticEvent } from 'react';
 
-// next
-import { useRouter } from 'next/navigation';
-
 // material-ui
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -24,10 +21,10 @@ import { Formik } from 'formik';
 // project import
 import IconButton from 'components/@extended/IconButton';
 import AnimateButton from 'components/@extended/AnimateButton';
-
+import useUser from 'hooks/useUser';
 import { openSnackbar } from 'api/snackbar';
-import useScriptRef from 'hooks/useScriptRef';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
+import axios from 'utils/axios';
 
 // types
 import { SnackbarProps } from 'types/snackbar';
@@ -37,11 +34,11 @@ import { StringColorProps } from 'types/password';
 import EyeOutlined from '@ant-design/icons/EyeOutlined';
 import EyeInvisibleOutlined from '@ant-design/icons/EyeInvisibleOutlined';
 
+
 // ============================|| STATIC - RESET PASSWORD ||============================ //
 
 export default function AuthResetPassword() {
-  const scriptedRef = useScriptRef();
-  const router = useRouter();
+  const user = useUser();
 
   const [level, setLevel] = useState<StringColorProps>();
   const [showPassword, setShowPassword] = useState(false);
@@ -72,37 +69,41 @@ export default function AuthResetPassword() {
       validationSchema={Yup.object().shape({
         password: Yup.string().max(255).required('Password is required'),
         confirmPassword: Yup.string()
-          .required('Confirm Password is required')
-          .test('confirmPassword', 'Both Password must be match!', (confirmPassword, yup) => yup.parent.password === confirmPassword)
+          .required('New Password is required')
+          .test('no-leading-trailing-whitespace', 'Password cannot start or end with spaces', (value) => value === value.trim())
+          .min(8, 'Password must be at least 8 characters')
+          .max(16, 'Password must be less than 16 characters')
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-        try {
-          // password reset
-          if (scriptedRef.current) {
-            setStatus({ success: true });
-            setSubmitting(false);
-
+        const trimmedNewPass = values.confirmPassword.trim();
+        if (trimmedNewPass === values.password) {
+          setErrors({ submit: 'Passwords must not match' });
+          setSubmitting(false);
+          return;
+        }
+        let theEmail;
+        if (user) {
+          theEmail = user.email;
+        }
+        axios
+          .patch(`/change-password`, {
+            email: theEmail,
+            password: values.password,
+            new_password: trimmedNewPass
+          })
+          .then(() => {
             openSnackbar({
               open: true,
-              message: 'Successfuly reset password.',
+              message: 'Successfully reset password.',
               variant: 'alert',
               alert: {
                 color: 'success'
               }
             } as SnackbarProps);
-
-            setTimeout(() => {
-              router.push('/login');
-            }, 1500);
-          }
-        } catch (err: any) {
-          console.error(err);
-          if (scriptedRef.current) {
-            setStatus({ success: false });
-            setErrors({ submit: err.message });
+          }).catch((error) => {
+            setErrors({ submit: 'Error resetting password: ' + error.message });
             setSubmitting(false);
-          }
-        }
+          });
       }}
     >
       {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
@@ -121,7 +122,6 @@ export default function AuthResetPassword() {
                   onBlur={handleBlur}
                   onChange={(e) => {
                     handleChange(e);
-                    changePassword(e.target.value);
                   }}
                   endAdornment={
                     <InputAdornment position="end">
@@ -144,6 +144,30 @@ export default function AuthResetPassword() {
                   {errors.password}
                 </FormHelperText>
               )}
+            </Grid>
+            <Grid item xs={12}>
+              <Stack spacing={1}>
+                <InputLabel htmlFor="confirm-password-reset">New Password</InputLabel>
+                <OutlinedInput
+                  fullWidth
+                  error={Boolean(touched.confirmPassword && errors.confirmPassword)}
+                  id="confirm-password-reset"
+                  type="password"
+                  value={values.confirmPassword}
+                  name="confirmPassword"
+                  onBlur={handleBlur}
+                  onChange={(e) => {
+                    handleChange(e);
+                    changePassword(e.target.value);
+                  }}
+                  placeholder="Enter new password"
+                />
+              </Stack>
+              {touched.confirmPassword && errors.confirmPassword && (
+                <FormHelperText error id="helper-text-confirm-password-reset">
+                  {errors.confirmPassword}
+                </FormHelperText>
+              )}
               <FormControl fullWidth sx={{ mt: 2 }}>
                 <Grid container spacing={2} alignItems="center">
                   <Grid item>
@@ -156,27 +180,6 @@ export default function AuthResetPassword() {
                   </Grid>
                 </Grid>
               </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <Stack spacing={1}>
-                <InputLabel htmlFor="confirm-password-reset">Confirm Password</InputLabel>
-                <OutlinedInput
-                  fullWidth
-                  error={Boolean(touched.confirmPassword && errors.confirmPassword)}
-                  id="confirm-password-reset"
-                  type="password"
-                  value={values.confirmPassword}
-                  name="confirmPassword"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  placeholder="Enter confirm password"
-                />
-              </Stack>
-              {touched.confirmPassword && errors.confirmPassword && (
-                <FormHelperText error id="helper-text-confirm-password-reset">
-                  {errors.confirmPassword}
-                </FormHelperText>
-              )}
             </Grid>
 
             {errors.submit && (

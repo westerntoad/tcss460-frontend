@@ -7,19 +7,41 @@ import SearchForm from '../../sections/books/SearchForm';
 import { Box, Container } from '@mui/system';
 import { Alert, Divider } from '@mui/material';
 import MainCard from 'components/MainCard';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 // Project Imports
 import { IBook } from 'types/ibooks';
 import BookList from 'sections/books/BookList';
 import SearchFooter from 'components/Search/SearchFooter';
 import { IAlert, EMPTY_ALERT } from 'types/alerts';
+import navProps from 'types/navs';
 
 export default function SearchPage() {
+
   const [results, setResults] = useState<IBook[] | undefined>();
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(25);
   const [alert, setAlert] = React.useState(EMPTY_ALERT);
+  const searchParams = useSearchParams();
+  const { replace } = useRouter();
+  const pathName = usePathname();
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    if (!params.get('size')) {
+      params.set('size', '25');
+      replace(`${pathName}?${params.toString()}`);
+    }
+  }, []);
+
+  const pageSize = parseInt(searchParams.get('size') as string) || 25;
+
+  const navObj: navProps = {
+    searchParams: searchParams,
+    replace: replace,
+    pathname: pathName
+  };
 
   const totalPages = results ? Math.ceil(results.length / pageSize) : 0;
 
@@ -45,7 +67,7 @@ export default function SearchPage() {
             alignItems: 'center'
           }}
         >
-          <SearchForm alertSetter={errorWrapper} resultSetter={setResults} pageHandler={handlePageChange}></SearchForm>
+          <SearchForm nav={navObj} alertSetter={errorWrapper} resultSetter={setResults} pageHandler={handlePageChange}></SearchForm>
         </Box>
         <Divider sx={{ paddingTop: 0.5, paddingBottom: 0.5, margin: 3 }} />
         <Container maxWidth="lg">
@@ -58,10 +80,10 @@ export default function SearchPage() {
             <>
               <BookList bookData={paginatedResults} />
               <SearchFooter
+                nav={navObj}
                 pageChangeHandler={handlePageChange}
                 currentPage={currentPage}
                 totalPages={totalPages}
-                pageSizeSetter={setPageSize}
                 pageSize={pageSize}
               />
             </>

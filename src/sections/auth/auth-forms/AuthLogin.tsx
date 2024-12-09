@@ -3,7 +3,6 @@
 import React, { useState, FocusEvent, SyntheticEvent } from 'react';
 
 // next
-import NextLink from 'next/link';
 import { signIn } from 'next-auth/react';
 
 // material-ui
@@ -12,7 +11,6 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
 import InputAdornment from '@mui/material/InputAdornment';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -178,13 +176,8 @@ export default function AuthLogin({ providers, csrfToken }: any) {
                         size="small"
                       />
                     }
-                    label={<Typography variant="h6">Keep me sign in</Typography>}
+                    label={<Typography variant="h6">Keep me signed in</Typography>}
                   />
-                  <NextLink href={'/forget-pass'} passHref legacyBehavior>
-                    <Link variant="h6" color="text.primary">
-                      Forgot Password?
-                    </Link>
-                  </NextLink>
                 </Stack>
               </Grid>
               {errors.submit && (
