@@ -40,9 +40,6 @@ export default function SearchForm(props: { resultSetter: Function; pageHandler:
       axios
         .get(`/books/${filter}/${query}`)
         .then((response) => {
-          if (filter === SearchFilters.author) {
-            query.replace(' ', '+');
-          }
           if (filter === SearchFilters.isbn) {
             props.resultSetter([response.data.books]);
           } else {
@@ -57,7 +54,7 @@ export default function SearchForm(props: { resultSetter: Function; pageHandler:
         });
     }
   };
-  
+
   return (
     <>
       <Stack direction="row" sx={{ alignItems: 'center' }} alignContent="center">

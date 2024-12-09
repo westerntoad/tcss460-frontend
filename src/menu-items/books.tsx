@@ -27,13 +27,6 @@ const books: NavItemType = {
       icon: icons.PlusSquareOutlined
     },
     {
-      id: 'paginate-temp',
-      title: <FormattedMessage id="paginate-temp" />,
-      type: 'item',
-      url: '/paginated',
-      icon: icons.UnorderedListOutlined
-    },
-    {
       id: 'search-page',
       title: <FormattedMessage id="search-page" />,
       type: 'item',

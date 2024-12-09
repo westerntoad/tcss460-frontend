@@ -4,22 +4,22 @@
 import { FormattedMessage } from 'react-intl';
 
 // assets
-import ChromeOutlined from '@ant-design/icons/ChromeOutlined';
+import HomeOutlined from '@ant-design/icons/HomeOutlined';
 
 // type
 import { NavItemType } from 'types/menu';
 
 // icons
-const icons = { ChromeOutlined };
+const icons = { HomeOutlined };
 
 // ==============================|| MENU ITEMS - SAMPLE PAGE ||============================== //
 
-const samplePage: NavItemType = {
+const home: NavItemType = {
   id: 'sample-page',
   title: <FormattedMessage id="sample-page" />,
   type: 'group',
-  url: '/sample-page',
-  icon: icons.ChromeOutlined
+  url: '/home',
+  icon: icons.HomeOutlined
 };
 
-export default samplePage;
+export default home;
