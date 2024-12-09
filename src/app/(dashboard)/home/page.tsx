@@ -1,31 +1,22 @@
 'use client';
-import BookIcon from 'components/BookIcon';
 import MainCard from 'components/MainCard';
 import * as React from 'react';
-import BookList from 'sections/books/BookList';
-import { IBook } from 'types/ibooks';
-import axios from 'utils/axios';
-import BookPage from 'views/book';
+import { Button, Link, Typography } from '@mui/material';
+import { Stack } from '@mui/system';
 
 // ==============================|| PAGE ||============================== //
 
 export default function HomeViewPage() {
-  const [theData, setTheData] = React.useState<IBook[]>([]);
-  const numBooks = 9_125;
-  const numDesired = 10;
-  React.useEffect(() => {
-    let newBooks: IBook[] = [];
-    for (let i = 0; i < numDesired; i++) {
-      axios
-        .get(`/books/all/?limit=1&offset=${Math.floor(Math.random() * numBooks)}`)
-        .then((response) => {
-          newBooks.push(response.data.books[0]);
-        })
-        .catch((error) => console.error(error));
-    }
-    console.log(newBooks);
-    setTheData(newBooks);
-  }, []);
-
-  return <MainCard>{(theData.length && <BookPage book={theData[0]} />) || 'Loading...'}</MainCard>;
+  return (
+    <MainCard>
+      <Typography variant="h4">TCSS 460: Client/Server Programming Final Project</Typography>
+      <Typography variant="body1" sx={{paddingTop: '1rem'}}>
+        This project was completed in Fall of 2024 by Jovany Cardoza-Aguilar, Tanner Denson, Abraham Engebretson, & Conner Webber.
+        Please check out the source code for this project on <Link href='https://github.com/westerntoad/tcss460-frontend'>GitHub</Link>!
+      </Typography>
+      <Stack sx={{paddingTop: '1.5rem'}} direction='row' justifyContent={'center'} alignContent={'center'}>
+        <Button variant='contained' sx={{ width: '12rem'}} href='/book/random'>I'm feelin' lucky!</Button>
+      </Stack>
+    </MainCard>
+  );
 }
