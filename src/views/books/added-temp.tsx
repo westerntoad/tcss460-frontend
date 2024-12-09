@@ -4,14 +4,14 @@ import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
-import SendIcon from '@mui/icons-material/Send';
+import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Alert } from '@mui/material';
 
 // project import
-import SendMessage from 'sections/books/bookAdder';
+import SendBook from 'sections/books/bookAdder';
 import { EMPTY_ALERT } from 'types/alerts';
 
 const defaultTheme = createTheme();
@@ -35,7 +35,6 @@ export default function AddedPage() {
     });
   };
 
-
   return (
     <ThemeProvider theme={defaultTheme}>
       {alert.showAlert && (
@@ -54,14 +53,14 @@ export default function AddedPage() {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <SendIcon />
+            <AutoStoriesIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Add Book
           </Typography>
 
           <Box sx={{ mt: 1 }}>
-            <SendMessage onSuccess={onSuccess} onError={onError} />
+            <SendBook onSuccess={onSuccess} onError={onError} />
           </Box>
         </Box>
       </Container>
