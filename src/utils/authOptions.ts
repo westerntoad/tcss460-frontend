@@ -21,7 +21,8 @@ export const authOptions: NextAuthOptions = {
             email: credentials?.email
           });
           if (user) {
-            return user.data;
+            user.data.user['accessToken'] = user.data.accessToken;
+            return user.data.user;
           }
         } catch (e: any) {
           console.dir(e);
@@ -37,8 +38,7 @@ export const authOptions: NextAuthOptions = {
         firstname: { name: 'firstname', label: 'Firstname', type: 'text', placeholder: 'Enter Firstname' },
         lastname: { name: 'lastname', label: 'Lastname', type: 'text', placeholder: 'Enter Lastname' },
         email: { name: 'email', label: 'Email', type: 'email', placeholder: 'Enter Email' },
-        username: { name: 'username', label: 'Username', type: 'username', placeholder: 'Enter Username' },
-        phone: { name: 'phone', label: 'Phone', type: 'phone', placeholder: 'Enter Phone Number' },
+        company: { name: 'company', label: 'Company', type: 'text', placeholder: 'Enter Company' },
         password: { name: 'password', label: 'Password', type: 'password', placeholder: 'Enter Password' }
       },
       async authorize(credentials) {
@@ -46,18 +46,20 @@ export const authOptions: NextAuthOptions = {
           const user = await axios.post('/register', {
             firstname: credentials?.firstname,
             lastname: credentials?.lastname,
+            company: credentials?.company,
             password: credentials?.password,
             email: credentials?.email,
             role: 1,
-            username: credentials?.username,
-            phone: credentials?.phone
+            username: credentials?.email,
+            phone: '728-238-2380'
           });
 
+          console.dir(user);
           if (user) {
-            return user.data;
+            user.data.user['accessToken'] = user.data.accessToken;
+            return user.data.user;
           }
         } catch (e: any) {
-          console.dir(e);
           const errorMessage = e?.message || e?.response?.data?.message || 'Something went wrong!';
           throw new Error(errorMessage);
         }

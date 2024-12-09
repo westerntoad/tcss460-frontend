@@ -13,6 +13,7 @@ export default function useUser() {
   const { data: session } = useSession();
   if (session) {
     const user = session?.user;
+    console.log(user);
     let thumb = user?.image!;
 
     if (!user?.image) {
